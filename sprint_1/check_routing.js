@@ -23,7 +23,7 @@ function get(reletiveURI, cookie = []) {
             resolve({ done: true, data: { res, rawData } });
          });
       }).on('error', (e) => {
-         resolve({ done: false });
+         resolve({ done: false, message: e });
       });
       req.end();
    });
@@ -33,9 +33,11 @@ async function test() {
     try {
         const resp = await get('');
         if (!resp.done) {
+         console.log(resp.message);
          throw new Error("Routing problem");
         }
         if (resp.data.res.statusCode !== 200) {
+         console.log(resp.data);
          throw new Error("Routing problem");
      }
     } catch(err) {
