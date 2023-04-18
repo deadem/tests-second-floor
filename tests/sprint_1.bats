@@ -4,7 +4,7 @@ setup_file() {
 
 teardown_file() {
     load utils/processes.bash
-    kill_descendant_processes "$(< "${BATS_RUN_TMPDIR}/node.pid")"
+    kill_descendant_processes "$(< "${BATS_RUN_TMPDIR}/node.pid")" true
 }
 
 setup() {
