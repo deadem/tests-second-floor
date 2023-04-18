@@ -15,7 +15,7 @@ teardown() {
     [ -n "$BATS_TEST_COMPLETED" ] || touch ${BATS_PARENT_TMPNAME}.skip
 }
 
-@test "Check dist and node_modules in .gitignore" {
+@test "Check node_modules in .gitignore" {
     [[ "$(cat .gitignore)" =~ (node_modules) ]]
 }
 
