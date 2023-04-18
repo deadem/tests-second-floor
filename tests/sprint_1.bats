@@ -32,7 +32,7 @@ teardown() {
     [ "$status" -eq 0 ]
 }
 
-@test "Exec npm run start" {
+@test "Run npm run start" {
     npm run start 2>&1 >/dev/null &
     echo "$!" > "${BATS_RUN_TMPDIR}/node.pid"
 }
