@@ -1,11 +1,11 @@
+load utils/tests.bats
+
 setup_file() {
     echo "" #init
 }
 
 teardown_file() {
-    load utils/processes.bash
-    PID="$(< "${BATS_RUN_TMPDIR}/node.pid")"
-    [ "${PID}" == "" ] || kill_descendant_processes "${PID}" true
+    shutdown_node
 }
 
 setup() {
@@ -28,22 +28,31 @@ teardown() {
     [[ "$(cat package.json)" =~ ("vite"|"parcel") ]] # No Parcel or Vite in package.json
 }
 
+@test "Netlify link in README.md" {
+    [[ "$(cat *.md)" =~ ([Nn]etlify\.app|onrender\.com) ]] # No netlify.app or onrender.com link found
+}
+
+@test "Check NodeJS version" {
+    if test -f ".nvmrc"; then
+        run cat .nvmrc
+        [[ "$output" =~ ([0-9]) ]] || fatal "$output" # Invalid Node version in .nvmrc
+    else
+        run cat package.json
+        [[ "$output" =~ ("engines".*"node") ]] || fatal "$output" # Can't find "node" in "engines" section in package.json
+    fi
+}
+
 @test "Run npm install" {
     run npm install
-    [ "$status" -eq 0 ] || "$output" # `npm install` fails with errors
+    [ "$status" -eq 0 ] || fatal "$output"
 }
 
-@test "Run npm run start" {
-    npm run start 2>&1 >/dev/null & # Can't run `npm run start` 
-    echo "$!" > "${BATS_RUN_TMPDIR}/node.pid"
-}
-
-@test "Check port 3000" {
-    timeout 600 bash "${BATS_TEST_DIRNAME}/utils/wait_for_port_3000.bash" # `npm run start` doesn't run server on port 3000
+@test "Run npm run start and wait for port 3000" {
+    start_node
 }
 
 @test "Check routing" {
     run curl -I http://localhost:3000/
-    [ "$status" -eq 0 ] || "$output" # curl http://localhost:3000/ failed
-    [[ "$output" =~ (HTTP[^ \t]*[ \t]200) ]] || "$output" # curl http://localhost:3000/ response failed
+    [ "$status" -eq 0 ] || fatal "$output" # curl http://localhost:3000/ failed
+    [[ "$output" =~ (HTTP[^ \t]*[ \t]200) ]] || fatal "$output" # curl http://localhost:3000/ response failed
 }
