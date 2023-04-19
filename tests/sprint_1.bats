@@ -29,7 +29,6 @@ teardown() {
 }
 
 @test "Run npm install" {
-    skip
     run npm install
     [ "$status" -eq 0 ] || "$output" # `npm install` fails with errors
 }
