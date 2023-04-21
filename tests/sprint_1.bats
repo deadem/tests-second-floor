@@ -34,8 +34,6 @@ teardown() {
         -regex ".*\.(js|ts|txt|md|html|css|scss|sass|styl|less|pcss|json)" \
         ! -path "*/.*" \
         ! -path '*/node_modules/*' \
-        ! -path '*/bats-core/*' \
-        ! -path '*/tests-second-floor/*'\
     ); do
 
         if ! [[ -s "$FILE" && -z "$(tail -c 1 "$FILE")" ]]
