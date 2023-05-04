@@ -47,3 +47,19 @@ load utils/startup.bash
     run jq <package.json "(.devDependencies.stylelint | length)"
     [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No stylelint in package.json
 }
+
+@test "Ensure all style files have the same extension" {
+    local tempfile="${BATS_RUN_TMPDIR}/style-ext-filelist.txt"
+    # echo "---$tempfile---"
+
+    find . -mindepth 1 -type f -regextype posix-extended -regex ".*\.(css|scss|sass|styl|less|pcss)" \
+    | sed "s/.*\.//" \
+    | sort \
+    | uniq \
+    > "$tempfile"
+
+    local extensions=$(cat "$tempfile")
+    local count="$(wc -l < $tempfile)"
+
+    [[ $count -eq 1 ]] || fatal "Found extensions:" $extensions # Check that all files in the project have the same extension
+}
