@@ -1,20 +1,4 @@
-load utils/tests.bats
-
-setup_file() {
-    echo "" #init
-}
-
-teardown_file() {
-    shutdown_node
-}
-
-setup() {
-    [ ! -f ${BATS_PARENT_TMPNAME}.skip ] || skip "skip remaining tests"
-}
-
-teardown() {
-    [ -n "$BATS_TEST_COMPLETED" ] || touch ${BATS_PARENT_TMPNAME}.skip
-}
+load utils/startup.bash
 
 @test "Check node_modules in .gitignore" {
     [[ "$(cat .gitignore)" =~ (node_modules) ]] # node_modules should be gitignored
@@ -64,19 +48,4 @@ teardown() {
     fi
     [[ "$output" =~ ([0-9]+) ]] || fatal "$output" # Invalid Node version
     (( "${BASH_REMATCH[1]}" >= 12 )) || fatal "Version: ${BASH_REMATCH[1]}" # Invalid minimal Node version
-}
-
-@test "Run npm install" {
-    run npm install
-    [ "$status" -eq 0 ] || fatal "$output"
-}
-
-@test "Run npm run start and wait for port 3000" {
-    start_node
-}
-
-@test "Check routing" {
-    run curl -I http://localhost:3000/
-    [ "$status" -eq 0 ] || fatal "$output" # curl http://localhost:3000/ failed
-    [[ "$output" =~ (HTTP[^ \t]*[ \t]200) ]] || fatal "$output" # curl http://localhost:3000/ response failed
 }
