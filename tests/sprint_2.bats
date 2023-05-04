@@ -50,7 +50,6 @@ load utils/startup.bash
 
 @test "Ensure all style files have the same extension" {
     local tempfile="${BATS_RUN_TMPDIR}/style-ext-filelist.txt"
-    # echo "---$tempfile---"
 
     find . -mindepth 1 -type f -regextype posix-extended -regex ".*\.(css|scss|sass|styl|less|pcss)" \
     | sed "s/.*\.//" \
