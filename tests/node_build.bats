@@ -13,7 +13,17 @@ teardown_file() {
     local count=`ls -1a .stylelintrc* | wc -l`
     if [ $count != 0 ]; then
         run npx stylelint "**/*.{css,scss,sass,styl,less,pcss}"
-        [ "$status" -eq 0 ] || fatal "$output"
+        [ "$status" -eq 0 ] || fatal "$output" # Lint styles
+    else
+        skip
+    fi
+}
+
+@test "Run eslint" {
+    local count=`ls -1a .eslintrc* | wc -l`
+    if [ $count != 0 ]; then
+        run npx eslint "**/*.{js,ts}"
+        [ "$status" -eq 0 ] || fatal "$output" # Lint js
     else
         skip
     fi
