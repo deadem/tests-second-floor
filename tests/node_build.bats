@@ -9,6 +9,16 @@ teardown_file() {
     [ "$status" -eq 0 ] || fatal "$output"
 }
 
+@test "Run stylelint" {
+    local count=`ls -1a .stylelintrc* | wc -l`
+    if [ $count != 0 ]; then
+        run npx stylelint "**/*.{css,scss,sass,styl,less,pcss}"
+        [ "$status" -eq 0 ] || fatal "$output"
+    else
+        skip
+    fi
+}
+
 @test "Run npm run start and wait for port 3000" {
     start_node
 }
