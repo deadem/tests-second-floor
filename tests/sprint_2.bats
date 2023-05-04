@@ -31,3 +31,11 @@ load utils/startup.bash
     run jq <tsconfig.json "(.compilerOptions.strictNullChecks | contains(true))"
     [ "$output" == "true" ] || fatal "$output" "$(cat tsconfig.json)" # Check "strictNullChecks": true option in tsconfig.json
 }
+
+@test "Check eslint in devDependencies" {
+    run jq <package.json "(.dependencies.eslint | length)"
+    [ "$output" -eq 0 ] || fatal "$(cat package.json)" # eslint should be only in devDependencies, not in dependencies
+
+    run jq <package.json "(.devDependencies.eslint | length)"
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No eslint in package.json
+}
