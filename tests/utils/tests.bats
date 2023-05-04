@@ -1,8 +1,5 @@
-bats_require_minimum_version 1.5.0
-
 fatal() {
-    local message="$1"
-    echo "$1"
+    echo "$*"
     exit 1
 }
 
