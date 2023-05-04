@@ -29,6 +29,16 @@ teardown_file() {
     fi
 }
 
+@test "Run typescript checks" {
+    local count=`ls -1a tsconfig.json | wc -l`
+    if [ $count != 0 ]; then
+        run npx tsc --noEmit
+        [ "$status" -eq 0 ] || fatal "$output" # Lint types
+    else
+        skip
+    fi
+}
+
 @test "Run npm run start and wait for port 3000" {
     start_node
 }
