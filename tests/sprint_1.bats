@@ -20,6 +20,10 @@ teardown() {
     [[ "$(cat .gitignore)" =~ (node_modules) ]] # node_modules should be gitignored
 }
 
+@test "Check dist|build in .gitignore" {
+    [[ "$(cat .gitignore)" =~ (dist|build) ]] # dist|build directory should be gitignored
+}
+
 @test "Check npm run start existence" {
     [[ "$(npm run)" =~ (start) ]] # `npm run start` missed
 }
