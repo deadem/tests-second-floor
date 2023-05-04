@@ -22,7 +22,9 @@ teardown_file() {
 @test "Run eslint" {
     local count=`ls -1a .eslintrc* | wc -l`
     if [ $count != 0 ]; then
-        run npx eslint "**/*.{js,ts}"
+        run npx eslint "**/*.{js,ts}" \
+        --rule "@typescript-eslint/ban-ts-comment: error"
+
         [ "$status" -eq 0 ] || fatal "$output" # Lint js
     else
         skip
