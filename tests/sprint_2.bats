@@ -13,6 +13,9 @@ load utils/startup.bash
         fatal "tsconfig.json required" # tsconfig.json not found in project directory
     fi
 
+    run jq <tsconfig.json ""
+    [ "$status" -eq 0 ] || fatal "$output" "$(cat tsconfig.json)" # Validate json file: tsconfig.json
+
     run jq <tsconfig.json "(.compilerOptions.noImplicitAny | contains(true))"
     [ "$output" == "true" ] || fatal "$output" "$(cat tsconfig.json)" # Check "noImplicitAny": true option in tsconfig.json
 
