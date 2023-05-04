@@ -14,7 +14,7 @@ load utils/startup.bash
 
 @test "Check Vite/Parcel presence" {
     run jq <package.json "(.devDependencies.parcel | length) + (.devDependencies.vite | length)"
-    [ "$output" -ne "0" ] || fatal "$(cat package.json)" # No Parcel or Vite found in devDependencies section of package.json
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No Parcel or Vite found in devDependencies section of package.json
 }
 
 @test "Check newline at end of files" {
