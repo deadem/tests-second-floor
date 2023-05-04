@@ -40,7 +40,7 @@ load utils/startup.bash
 }
 
 @test "Check NodeJS version" {
-    if test -f ".nvmrc"; then
+    if [ -f ".nvmrc" ]; then
         run cat .nvmrc
     else
         run jq <package.json "(.engines.node)"
