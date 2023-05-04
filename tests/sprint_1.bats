@@ -58,11 +58,12 @@ teardown() {
 @test "Check NodeJS version" {
     if test -f ".nvmrc"; then
         run cat .nvmrc
-        [[ "$output" =~ ([0-9]) ]] || fatal "$output" # Invalid Node version in .nvmrc
     else
-        run cat package.json
-        [[ "$output" =~ ("engines".*"node") ]] || fatal "$output" # Can't find "node" in "engines" section in package.json
+        run jq <package.json "(.engines.node)"
+        [[ "$output" = "null" ]] && fatal "$output" # Can't find "node" in "engines" section in package.json
     fi
+    [[ "$output" =~ ([0-9]+) ]] || fatal "$output" # Invalid Node version
+    (( "${BASH_REMATCH[1]}" >= 12 )) || fatal "Version: ${BASH_REMATCH[1]}" # Invalid minimal Node version
 }
 
 @test "Run npm install" {
