@@ -41,6 +41,15 @@ teardown_file() {
     fi
 }
 
+@test "Run npm test" {
+    if [[ "$(npm run)" =~ (test) ]]
+        run npm test
+        [ "$status" -eq 0 ] || fatal "$output" # npm test
+    else
+        skip
+    fi
+}
+
 @test "Run npm run start and wait for port 3000" {
     start_node
 }
