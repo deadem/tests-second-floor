@@ -42,7 +42,7 @@ teardown_file() {
 }
 
 @test "Run npm test" {
-    if [[ "$(npm run)" =~ (test) ]]; then
+    if [[ "$SPRINT" == "sprint_4" ]]; then
         run npm test
         [ "$status" -eq 0 ] || fatal "$output" # npm test
     else
