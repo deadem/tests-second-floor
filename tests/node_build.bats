@@ -9,6 +9,16 @@ teardown_file() {
     [ "$status" -eq 0 ] || fatal "$output"
 }
 
+@test "Check pre-commit hook installed" {
+    if [[ "$SPRINT" != "sprint_4" ]]; then
+        skip
+    fi
+
+    run ls -1 `git rev-parse --git-path hooks`
+    [ "$status" -eq 0 ] || fatal "$output" # list hooks
+    [[ "$output" =~ (pre-commit$) ]] || fatal "$output" # pre-commit not found
+}
+
 @test "Run stylelint" {
     local count=`ls -1a .stylelintrc* | wc -l`
     if [ $count != 0 ]; then
@@ -42,12 +52,12 @@ teardown_file() {
 }
 
 @test "Run npm test" {
-    if [[ "$SPRINT" == "sprint_4" ]]; then
-        run npm test
-        [ "$status" -eq 0 ] || fatal "$output" # npm test
-    else
+    if [[ "$SPRINT" != "sprint_4" ]]; then
         skip
     fi
+
+    run npm test
+    [ "$status" -eq 0 ] || fatal "$output" # npm test
 }
 
 @test "Run npm run start and wait for port 3000" {
