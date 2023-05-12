@@ -19,7 +19,7 @@ kill_descendant_processes() {
 start_node() {
     npm run start 2>&1 >/dev/null & # Can't run `npm run start` 
     echo "$!" > "${BATS_RUN_TMPDIR}/node.pid"
-    timeout 600 bash "${BATS_TEST_DIRNAME}/utils/wait_for_port_3000.bash" # Wait for server on port 3000
+    timeout 60 bash "${BATS_TEST_DIRNAME}/utils/wait_for_port_3000.bash" # Wait for server on port 3000
 }
 
 shutdown_node() {
