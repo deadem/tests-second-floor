@@ -16,7 +16,7 @@ teardown_file() {
 
     run ls -1 `git rev-parse --git-path hooks`
     [ "$status" -eq 0 ] || fatal "$output" # list hooks
-    [[ "$output" =~ (pre-commit$) ]] || fatal "$output" # pre-commit not found
+    [[ "$output" =~ (pre-commit$) ]] || fatal "$output" # Check pre-commit hook
 }
 
 @test "Run stylelint" {
@@ -66,6 +66,6 @@ teardown_file() {
 
 @test "Check routing" {
     run curl -I http://localhost:3000/
-    [ "$status" -eq 0 ] || fatal "$output" # curl http://localhost:3000/ failed
-    [[ "$output" =~ (HTTP[^ \t]*[ \t]200) ]] || fatal "$output" # curl http://localhost:3000/ response failed
+    [ "$status" -eq 0 ] || fatal "$output" # Check status of curl http://localhost:3000/
+    [[ "$output" =~ (HTTP[^ \t]*[ \t]200) ]] || fatal "$output" # Check response of curl http://localhost:3000/
 }

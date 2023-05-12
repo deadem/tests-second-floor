@@ -17,7 +17,7 @@ load utils/startup.bash
     [ "$output" -eq 0 ] || fatal "$(cat package.json)" # Parcel or Vite should be only in devDependencies, not in dependencies
 
     run jq <package.json "(.devDependencies.parcel | length) + (.devDependencies.vite | length)"
-    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No Parcel or Vite found in devDependencies section of package.json
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # Parcel or Vite in devDependencies section of package.json
 }
 
 @test "Check newline at end of files" {
@@ -39,7 +39,7 @@ load utils/startup.bash
 }
 
 @test "Netlify link in README.md" {
-    [[ "$(cat *.md)" =~ ([Nn]etlify\.app|onrender\.com) ]] # No netlify.app or onrender.com link found
+    [[ "$(cat *.md)" =~ ([Nn]etlify\.app|onrender\.com) ]] # netlify.app or onrender.com link in README.md
 }
 
 @test "Check NodeJS version" {
@@ -47,8 +47,8 @@ load utils/startup.bash
         run cat .nvmrc
     else
         run jq <package.json "(.engines.node)"
-        [[ "$output" = "null" ]] && fatal "$output" # Can't find "node" in "engines" section in package.json
+        [[ "$output" = "null" ]] && fatal "$output" # "node" in "engines" section in package.json
     fi
-    [[ "$output" =~ ([0-9]+) ]] || fatal "$output" # Invalid Node version
-    (( "${BASH_REMATCH[1]}" >= 12 )) || fatal "Version: ${BASH_REMATCH[1]}" # Invalid minimal Node version
+    [[ "$output" =~ ([0-9]+) ]] || fatal "$output" # Numeric Node version
+    (( "${BASH_REMATCH[1]}" >= 12 )) || fatal "Version: ${BASH_REMATCH[1]}" # Check minimal Node version
 }

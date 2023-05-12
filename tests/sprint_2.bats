@@ -5,12 +5,12 @@ load utils/startup.bash
     [ "$output" -eq 0 ] || fatal "$(cat package.json)" # Typescript should be only in devDependencies, not in dependencies
 
     run jq <package.json "(.devDependencies.typescript | length)"
-    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No typescript in package.json
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # Typescript in package.json
 }
 
 @test "Check tsconfig" {
     if [ ! -f "./tsconfig.json" ]; then
-        fatal "tsconfig.json required" # tsconfig.json not found in project directory
+        fatal "tsconfig.json required" # Check tsconfig.json in project directory
     fi
 
     run jq <tsconfig.json ""
@@ -37,7 +37,7 @@ load utils/startup.bash
     [ "$output" -eq 0 ] || fatal "$(cat package.json)" # eslint should be only in devDependencies, not in dependencies
 
     run jq <package.json "(.devDependencies.eslint | length)"
-    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No eslint in package.json
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # eslint in package.json
 }
 
 @test "Check stylelint in devDependencies" {
@@ -45,7 +45,7 @@ load utils/startup.bash
     [ "$output" -eq 0 ] || fatal "$(cat package.json)" # stylelint should be only in devDependencies, not in dependencies
 
     run jq <package.json "(.devDependencies.stylelint | length)"
-    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # No stylelint in package.json
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # stylelint in package.json
 }
 
 @test "Ensure all style files have the same extension" {
