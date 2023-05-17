@@ -23,6 +23,7 @@ start_node() {
 }
 
 shutdown_node() {
+    touch "${BATS_RUN_TMPDIR}/node.pid"
     PID="$(< "${BATS_RUN_TMPDIR}/node.pid")"
     [ "${PID}" == "" ] || kill_descendant_processes "${PID}" true || true
 }
