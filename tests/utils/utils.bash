@@ -24,5 +24,5 @@ start_node() {
 
 shutdown_node() {
     PID="$(< "${BATS_RUN_TMPDIR}/node.pid")"
-    [ "${PID}" == "" ] || kill_descendant_processes "${PID}" true
+    [ "${PID}" == "" ] || kill_descendant_processes "${PID}" true || true
 }
