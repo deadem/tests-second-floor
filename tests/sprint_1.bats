@@ -12,12 +12,12 @@ load utils/startup.bash
     [[ "$(npm run)" =~ (start) ]] # `npm run start` missed
 }
 
-@test "Check Vite/Parcel presence" {
-    run jq <package.json "(.dependencies.parcel | length) + (.dependencies.vite | length)"
-    [ "$output" -eq 0 ] || fatal "$(cat package.json)" # Parcel or Vite should be only in devDependencies, not in dependencies
+@test "Check Vite presence" {
+    run jq <package.json "(.dependencies.vite | length)"
+    [ "$output" -eq 0 ] || fatal "$(cat package.json)" # Vite should be only in devDependencies, not in dependencies
 
-    run jq <package.json "(.devDependencies.parcel | length) + (.devDependencies.vite | length)"
-    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # Parcel or Vite in devDependencies section of package.json
+    run jq <package.json "(.devDependencies.vite | length)"
+    [ "$output" -ne 0 ] || fatal "$(cat package.json)" # Vite in devDependencies section of package.json
 }
 
 @test "Check newline at end of files" {
