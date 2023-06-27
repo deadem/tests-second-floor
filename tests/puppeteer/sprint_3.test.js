@@ -46,4 +46,32 @@ describe('sprint 3. page /', () => {
 
     assert.notEqual(authButton.length, 0, 'Authorization button not found. Check the button text');
   });
+
+  it('Register button presence', async () => {
+    const form = await page.$('form');
+    const authButton = (
+      await form.$$eval([
+        '::-p-text(Ещё не зарегистрированы?)',
+        '::-p-text(Нет аккаунта?)',
+        '::-p-text(Нет профиля?)',
+        '::-p-text(Впервые?)',
+        '::-p-text(Sign up)',
+        '::-p-text(Зарегистрироваться)',
+        '::-p-text(Регистрация)',
+        '::-p-text(Создать аккаунт)',
+        '::-p-text(Создать пользователя)',
+        '::-p-text(Создать профиль)',
+        '::-p-text(Зарегистрировать)',
+        '::-p-text(Create account)',
+        '::-p-text(Create profile)',
+        '::-p-text(Create a profile)',
+        '::-p-text(Create user)',
+        '::-p-text(Create a user)',
+        '::-p-text(Register)',
+        '::-p-text(Registration)',
+      ].join(','), nodes => nodes.map(node => node.closest('a[href],button')))
+    ).filter(Boolean);
+
+    assert.notEqual(authButton.length, 0, 'Register button or link not found. Check the button text');
+  });
 });
