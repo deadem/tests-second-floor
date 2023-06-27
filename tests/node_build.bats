@@ -91,3 +91,12 @@ teardown_file() {
     [ "$status" -eq 0 ] || fatal "$output" # Check status of curl http://localhost:3000/random-page-that-should-end-with-404-error
     [[ "$output" =~ (HTTP[^ \t]*[ \t]404) ]] || fatal "$output" # Check response of curl http://localhost:3000/random-page-that-should-end-with-404-error
 }
+
+@test "Run puppeteer" {
+    if [[ "$SPRINT" != "sprint_2" && "$SPRINT" != "sprint_3" && "$SPRINT" != "sprint_4" ]]; then
+        skip
+    fi
+
+    run npm mocha --timeout 5000 "puppeteer/$SPRINT.test.js"
+    [ "$status" -eq 0 ] || fatal "$output"
+}
