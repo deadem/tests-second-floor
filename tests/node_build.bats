@@ -97,6 +97,6 @@ teardown_file() {
         skip
     fi
 
-    run npm mocha --timeout 5000 "puppeteer/$SPRINT.test.js"
+    run npx mocha --timeout 5000 "puppeteer/$SPRINT.test.js"
     [ "$status" -eq 0 ] || fatal "$output"
 }
