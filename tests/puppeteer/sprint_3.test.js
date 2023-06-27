@@ -26,17 +26,16 @@ describe('sprint 3', () => {
     const password = await form.$('input[name=password]');
     assert.notEqual(password, null, '<input name=password> not found. Password field required');
 
-    const authSelectors = (await Promise.all([
-      await form.$('::-p-text(Вход)'),
-      await form.$('::-p-text(Sign in)'),
-      await form.$('::-p-text(Войти)'),
-      await form.$('::-p-text(Enter)'),
-      await form.$('::-p-text(Авторизоваться)'),
-    ])).flat().filter(Boolean).map(handle => handle.evaluate(node => node.closest('a[href],button')));
+    const authButton = (
+      await form.$$eval([
+        '::-p-text(Вход)',
+        '::-p-text(Sign in)',
+        '::-p-text(Войти)',
+        '::-p-text(Enter)',
+        '::-p-text(Авторизоваться)',
+      ].join(','), nodes => nodes.map(node => node.closest('a[href],button')))
+    ).filter(Boolean);
 
-    const authButton = (await Promise.all(authSelectors)).filter(Boolean);
-    assert.notEqual(authButton.length, 0, 'Authorize button not found. Check the button text');
-
-    console.log(await Promise.all(authButton));
+    assert.notEqual(authButton.length, 0, 'Authorization button not found. Check the button text');
   });
 });
